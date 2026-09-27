@@ -1,14 +1,23 @@
-"""Liga os ecrãs entre si: Tela inicial -> Login -> Aplicação principal."""
+"""Fluxo dos ecrãs: Tela inicial -> Login -> Aplicação principal.
+
+Os ecrãs não se conhecem: cada um recebe um callback que chama quando
+termina. Para mudar o fluxo, só se mexe neste ficheiro.
+"""
 
 import tkinter as tk
 
 from src.interface import AplicacaoPadaria, TelaInicial, TelaLogin
+from src.interface.tema import aplicar_tema
+
+
+def criar_janela_raiz():
+    """Usar sempre em vez de tk.Tk(), para a janela nova já ter o tema."""
+    root = tk.Tk()
+    aplicar_tema(root)
+    return root
 
 
 def iniciar_aplicacao(root):
-    """Mostra a tela inicial; ao clicar em 'Acessar' vai para o login;
-    só depois de autenticado é que o sistema principal é aberto."""
-
     def ao_autenticar(perfil):
         AplicacaoPadaria(root, perfil, ao_terminar_sessao)
 
@@ -19,13 +28,12 @@ def iniciar_aplicacao(root):
 
 
 def ao_terminar_sessao():
-    """Chamado quando o utilizador clica em 'Sair': abre uma janela nova
-    e recomeça pela tela inicial."""
-    nova_janela = tk.Tk()
-    iniciar_aplicacao(nova_janela)
+    """Botão 'Sair': recomeça numa janela nova. Os dados da sessão perdem-se,
+    porque vivem dentro de AplicacaoPadaria."""
+    iniciar_aplicacao(criar_janela_raiz())
 
 
 def main():
-    root = tk.Tk()
+    root = criar_janela_raiz()
     iniciar_aplicacao(root)
-    root.mainloop()
+    root.mainloop()  # corre enquanto houver alguma janela Tk aberta

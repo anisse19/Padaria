@@ -37,11 +37,12 @@ Padaria/
 │   └── imagens/fundo.png       # Imagem da tela inicial
 ├── src/
 │   ├── app.py                  # Liga os ecrãs: Tela inicial -> Login -> Aplicação
-│   ├── config.py               # Utilizadores e operações restritas ao Dono
+│   ├── config.py               # Nome da padaria, moeda, utilizadores e permissões
 │   ├── estruturas/
 │   │   ├── lista_produtos.py   # No + ListaLigada (produtos)
 │   │   └── lista_vendas.py     # NoVenda + ListaVendas
 │   └── interface/
+│       ├── tema.py             # Cores, fontes e estilos (todo o visual está aqui)
 │       ├── tela_inicial.py     # Splash com imagem e botão "Acessar"
 │       ├── tela_login.py       # Autenticação
 │       └── aplicacao.py        # Janela principal (sidebar, formulário, abas)

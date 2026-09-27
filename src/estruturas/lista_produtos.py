@@ -1,17 +1,29 @@
-"""Lista duplamente ligada que guarda os produtos da padaria."""
+"""Lista duplamente ligada que guarda os produtos da padaria.
+
+Invariantes (qualquer método que mexa em ligações tem de as manter):
+  - lista vazia <=> primeiro is None <=> ultimo is None <=> tamanho == 0
+  - primeiro.anterior is None e ultimo.proximo is None
+  - n.proximo.anterior is n, para todo o nó n com próximo
+
+Para escalar: um dicionário {codigo: No} ao lado da lista tornaria as
+buscas por código O(1) em vez de O(n).
+"""
 
 
 class No:
-    """Nó da lista duplamente ligada. Cada nó guarda um produto e as referências
-    ao nó anterior e ao próximo nó."""
+    """Um produto + ligações ao nó anterior e ao próximo.
+
+    Para acrescentar um atributo: pô-lo aqui e em ListaLigada.cadastrar, e
+    depois em AplicacaoPadaria.ATRIBUTOS / ATRIBUTOS_LABEL.
+    """
 
     def __init__(self, codigo, nome, categoria, preco, quantidade, validade):
-        self.codigo = codigo
+        self.codigo = codigo            # int, único na lista
         self.nome = nome
         self.categoria = categoria
-        self.preco = preco
-        self.quantidade = quantidade
-        self.validade = validade
+        self.preco = preco              # float
+        self.quantidade = quantidade    # int, stock disponível
+        self.validade = validade        # str "dd/mm/aaaa"
         self.anterior = None
         self.proximo = None
 
@@ -21,11 +33,12 @@ class ListaLigada:
 
     def __init__(self):
         self.primeiro = None
-        self.ultimo = None
+        self.ultimo = None     # permite inserir no fim em O(1)
         self.tamanho = 0
 
     # ---------------- CADASTRO ----------------
     def cadastrar(self, codigo, nome, categoria, preco, quantidade, validade):
+        """Insere no fim. O código tem de ser único (é a chave de tudo o resto)."""
         if self.buscar_por_codigo(codigo) is not None:
             raise ValueError(f"Já existe um produto com o código {codigo}.")
 
@@ -49,6 +62,9 @@ class ListaLigada:
         return None
 
     def buscar_por_um_atributo(self, atributo, valor):
+        """`atributo` é o nome do campo (ex.: "categoria"), lido com getattr.
+        Compara como texto, sem distinguir maiúsculas. Por isso o preço 15
+        só é encontrado escrevendo "15.0"."""
         resultados = []
         actual = self.primeiro
         valor = str(valor).strip().lower()
@@ -60,6 +76,7 @@ class ListaLigada:
         return resultados
 
     def buscar_por_dois_atributos(self, atributo1, valor1, atributo2, valor2):
+        """As duas condições têm de se verificar (E lógico)."""
         resultados = []
         actual = self.primeiro
         valor1 = str(valor1).strip().lower()
@@ -74,6 +91,7 @@ class ListaLigada:
 
     # ---------------- ALTERAÇÃO ----------------
     def alterar_por_codigo(self, codigo, novos_dados: dict):
+        """Valores None ou "" são ignorados (o campo mantém o valor atual)."""
         no = self.buscar_por_codigo(codigo)
         if no is None:
             raise ValueError(f"Produto com código {codigo} não encontrado.")
@@ -84,7 +102,8 @@ class ListaLigada:
 
     # ---------------- ELIMINAÇÃO ----------------
     def _desligar(self, no):
-        """Retira o nó da lista, religando o anterior e o próximo entre si."""
+        """Retira o nó da lista, religando o anterior e o próximo entre si.
+        Único sítio que remove nós: novas formas de eliminar devem usá-lo."""
         if no.anterior is None:
             self.primeiro = no.proximo
         else:
@@ -101,6 +120,7 @@ class ListaLigada:
         return no
 
     def eliminar_por_posicao(self, posicao):
+        """Posição começa em 1."""
         if posicao < 1 or posicao > self.tamanho:
             raise IndexError("Posição inválida.")
 
@@ -125,6 +145,9 @@ class ListaLigada:
         return self._desligar(no)
 
     # ---------------- IMPRESSÃO ----------------
+    # Devolvem os próprios nós (não cópias): quem os usa não deve mexer em
+    # anterior/proximo.
+
     def listar_todos(self):
         produtos = []
         actual = self.primeiro
@@ -137,6 +160,11 @@ class ListaLigada:
         return self.buscar_por_um_atributo(atributo, valor)
 
     def listar_ordenado(self, atributo, decrescente=False):
+        """Bubble sort sobre uma cópia, e a lista ligada não muda.
+
+        Limite: `validade` é texto, por isso "01/12/2026" fica antes de
+        "15/09/2026". Para ordenar datas bem, guardar como datetime.date.
+        """
         produtos = self.listar_todos()
         n = len(produtos)
         for i in range(n):

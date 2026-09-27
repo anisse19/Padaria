@@ -1,4 +1,4 @@
-"""Ponto de entrada do programa. Executar com:  python main.py"""
+"""Ponto de entrada. Executar a partir da raiz do projecto: python main.py"""
 
 from src.app import main
 
