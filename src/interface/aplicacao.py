@@ -120,17 +120,17 @@ class AplicacaoPadaria:
         # (identificador, ícone, método). As permissões comparam o
         # identificador, por isso os ícones podem mudar à vontade.
         operacoes = [
-            ("Buscar Produto", "🔍", self.acao_buscar_produto),
-            ("Registar Venda", "🧾", self._registar_venda),
-            ("Cadastrar", "🍞", self.acao_cadastrar),
-            ("Buscar (1 atributo)", "🔎", self.acao_buscar_um_atributo),
-            ("Buscar (2 atributos)", "🔎", self.acao_buscar_dois_atributos),
-            ("Alterar (por código)", "📝", self.acao_alterar),
-            ("Eliminar por posição", "❌", self.acao_eliminar_posicao),
-            ("Eliminar por código", "❌", self.acao_eliminar_codigo),
-            ("Listar todos", "📋", self.acao_listar_todos),
-            ("Listar por critério", "📑", self.acao_listar_criterio),
-            ("Listar ordenado", "📊", self.acao_listar_ordenado),
+            ("Buscar Produto", self.acao_buscar_produto),
+            ("Registar Venda", self._registar_venda),
+            ("Cadastrar", self.acao_cadastrar),
+            ("Buscar (1 atributo)",  self.acao_buscar_um_atributo),
+            ("Buscar (2 atributos)",  self.acao_buscar_dois_atributos),
+            ("Alterar (por código)",  self.acao_alterar),
+            ("Eliminar por posição",  self.acao_eliminar_posicao),
+            ("Eliminar por código", self.acao_eliminar_codigo),
+            ("Listar todos",  self.acao_listar_todos),
+            ("Listar por critério", self.acao_listar_criterio),
+            ("Listar ordenado", self.acao_listar_ordenado),
         ]
 
         for identificador, icone, comando in operacoes:
