@@ -1,7 +1,6 @@
 """Configuração do sistema: utilizadores autorizados e permissões."""
 
-# Em produção, as senhas nunca devem ficar em texto simples no código-fonte;
-# aqui ficam assim apenas para efeitos do trabalho académico.
+
 
 UTILIZADORES = {
     "dono": {
