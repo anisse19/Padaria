@@ -117,27 +117,27 @@ class AplicacaoPadaria:
         titulo = ttk.Label(sidebar, text="Operações", style="Sidebar.TLabel")
         titulo.pack(pady=(18, 12), padx=16, anchor="w")
 
-        # (identificador, ícone, método). As permissões comparam o
-        # identificador, por isso os ícones podem mudar à vontade.
+        # (identificador, método). O identificador é o texto do botão e é
+        # comparado com OPERACOES_RESTRITAS_AO_DONO: mudar um obriga a mudar o outro.
         operacoes = [
             ("Buscar Produto", self.acao_buscar_produto),
             ("Registar Venda", self._registar_venda),
             ("Cadastrar", self.acao_cadastrar),
-            ("Buscar (1 atributo)",  self.acao_buscar_um_atributo),
-            ("Buscar (2 atributos)",  self.acao_buscar_dois_atributos),
-            ("Alterar (por código)",  self.acao_alterar),
-            ("Eliminar por posição",  self.acao_eliminar_posicao),
+            ("Buscar (1 atributo)", self.acao_buscar_um_atributo),
+            ("Buscar (2 atributos)", self.acao_buscar_dois_atributos),
+            ("Alterar (por código)", self.acao_alterar),
+            ("Eliminar por posição", self.acao_eliminar_posicao),
             ("Eliminar por código", self.acao_eliminar_codigo),
-            ("Listar todos",  self.acao_listar_todos),
+            ("Listar todos", self.acao_listar_todos),
             ("Listar por critério", self.acao_listar_criterio),
             ("Listar ordenado", self.acao_listar_ordenado),
         ]
 
-        for identificador, icone, comando in operacoes:
+        for identificador, comando in operacoes:
             restrita = identificador in OPERACOES_RESTRITAS_AO_DONO
             if restrita and not self.e_dono:
                 continue  # operação nem sequer é apresentada a quem não é o Dono
-            btn = ttk.Button(sidebar, text=f"{icone}   {identificador}",
+            btn = ttk.Button(sidebar, text=identificador,
                              style="Sidebar.TButton", command=comando)
             btn.pack(fill="x", padx=8, pady=1)
 

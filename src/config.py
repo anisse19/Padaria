@@ -22,8 +22,8 @@ UTILIZADORES = {
     },
 }
 
-# Identificadores das operações (ver AplicacaoPadaria._construir_sidebar)
-# reservadas ao Dono. São os identificadores, não o texto dos botões.
+# Operações reservadas ao Dono. Têm de ser iguais ao texto dos botões em
+# AplicacaoPadaria._construir_sidebar.
 OPERACOES_RESTRITAS_AO_DONO = {
     "Cadastrar",
     "Alterar (por código)",
