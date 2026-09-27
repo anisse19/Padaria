@@ -14,9 +14,9 @@ class TestListaVendas(unittest.TestCase):
         self.assertEqual([v.codigo_produto for v in vendas.listar_todas()], [1, 3])
         self.assertEqual(vendas.total_quantidade(), 15)
         self.assertEqual(vendas.total_vendas(), 1025.0)
-        self.assertEqual(vendas.cauda.codigo_produto, 3)
-        self.assertEqual(vendas.cauda.anterior.codigo_produto, 1)
-        self.assertIsNone(vendas.cabeca.anterior)
+        self.assertEqual(vendas.ultimo.codigo_produto, 3)
+        self.assertEqual(vendas.ultimo.anterior.codigo_produto, 1)
+        self.assertIsNone(vendas.primeiro.anterior)
 
 
 if __name__ == "__main__":

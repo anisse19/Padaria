@@ -21,42 +21,42 @@ class ListaVendas:
     """Lista duplamente ligada que armazena as vendas realizadas."""
 
     def __init__(self):
-        self.cabeca = None
-        self.cauda = None
+        self.primeiro = None
+        self.ultimo= None
         self.tamanho = 0
 
     def registar_venda(self, codigo_produto, nome_produto, quantidade, preco_unitario):
         novo_no = NoVenda(codigo_produto, nome_produto, quantidade, preco_unitario)
-        if self.cabeca is None:
-            self.cabeca = novo_no
-            self.cauda = novo_no
+        if self.primeiro is None:
+            self.primeiro = novo_no
+            self.ultimo= novo_no
         else:
-            novo_no.anterior = self.cauda
-            self.cauda.proximo = novo_no
-            self.cauda = novo_no
+            novo_no.anterior = self.ultimo
+            self.ultimo.proximo = novo_no
+            self.ultimo= novo_no
         self.tamanho += 1
         return novo_no
 
     def listar_todas(self):
         vendas = []
-        atual = self.cabeca
-        while atual is not None:
-            vendas.append(atual)
-            atual = atual.proximo
+        actual = self.primeiro
+        while actual is not None:
+            vendas.append(actual)
+            actual = actual.proximo
         return vendas
 
     def total_vendas(self):
         total = 0
-        atual = self.cabeca
-        while atual is not None:
-            total += atual.total
-            atual = atual.proximo
+        actual = self.primeiro
+        while actual is not None:
+            total += actual.total
+            actual = actual.proximo
         return total
 
     def total_quantidade(self):
         total = 0
-        atual = self.cabeca
-        while atual is not None:
-            total += atual.quantidade
-            atual = atual.proximo
+        actual = self.primeiro
+        while actual is not None:
+            total += actual.quantidade
+            actual = actual.proximo
         return total

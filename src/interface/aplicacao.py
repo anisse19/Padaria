@@ -56,7 +56,7 @@ class AplicacaoPadaria:
         ttk.Button(topo, text="Sair", command=self._terminar_sessao).pack(side="right")
 
     def _terminar_sessao(self):
-        if messagebox.askyesno("Terminar sessão", "Deseja terminar a sessão atual?"):
+        if messagebox.askyesno("Terminar sessão", "Deseja terminar a sessão actual?"):
             self.root.destroy()
             self.ao_terminar_sessao()
 
@@ -176,7 +176,7 @@ class AplicacaoPadaria:
                                    command=self._registar_venda)
         btn_registar.pack(side="right", padx=20)
 
-        self._atualizar_tabela_vendas()
+        self._actualizar_tabela_vendas()
 
     # ---------------- POPULAR DADOS DE EXEMPLO ----------------
     def _popular_exemplo(self):
@@ -194,8 +194,8 @@ class AplicacaoPadaria:
         self.lista_vendas.registar_venda(3, "Pastel de nata", 5, 45.0)
         self.lista_vendas.registar_venda(2, "Bolo de chocolate", 2, 350.0)
 
-    # ---------------- ATUALIZAR TABELAS ----------------
-    def _atualizar_tabela_registos(self, produtos=None):
+    # ---------------- actualIZAR TABELAS ----------------
+    def _actualizar_tabela_registos(self, produtos=None):
         if produtos is None:
             produtos = self.lista.listar_todos()
         self.tabela_registos.delete(*self.tabela_registos.get_children())
@@ -204,7 +204,7 @@ class AplicacaoPadaria:
                 p.codigo, p.nome, p.categoria, p.preco, p.quantidade, p.validade
             ))
 
-    def _atualizar_tabela_vendas(self):
+    def _actualizar_tabela_vendas(self):
         vendas = self.lista_vendas.listar_todas()
         self.tabela_vendas.delete(*self.tabela_vendas.get_children())
         for v in vendas:
@@ -269,7 +269,7 @@ class AplicacaoPadaria:
                 return
 
             self._preencher_formulario(produto)
-            self._atualizar_tabela_registos([produto])
+            self._actualizar_tabela_registos([produto])
             janela.destroy()
 
         entrada_codigo.bind("<Return>", lambda e: buscar())
@@ -287,7 +287,7 @@ class AplicacaoPadaria:
             quantidade = int(dados["quantidade"])
             self.lista.cadastrar(codigo, dados["nome"], dados["categoria"],
                                   preco, quantidade, dados["validade"])
-            self._atualizar_tabela_registos()
+            self._actualizar_tabela_registos()
             messagebox.showinfo("Sucesso", "Produto cadastrado com sucesso.")
             self._limpar_formulario()
         except ValueError as e:
@@ -298,7 +298,7 @@ class AplicacaoPadaria:
         if atributo is None:
             return
         resultados = self.lista.buscar_por_um_atributo(atributo, valor)
-        self._atualizar_tabela_registos(resultados)
+        self._actualizar_tabela_registos(resultados)
         self.abas.select(self.tab_registos)
         if not resultados:
             messagebox.showinfo("Busca", "Nenhum produto encontrado.")
@@ -323,7 +323,7 @@ class AplicacaoPadaria:
             resultados = self.lista.buscar_por_dois_atributos(
                 combo1.get(), entrada1.get(), combo2.get(), entrada2.get()
             )
-            self._atualizar_tabela_registos(resultados)
+            self._actualizar_tabela_registos(resultados)
             self.abas.select(self.tab_registos)
             if not resultados:
                 messagebox.showinfo("Busca", "Nenhum produto encontrado.")
@@ -348,7 +348,7 @@ class AplicacaoPadaria:
                 "validade": dados["validade"],
             }
             self.lista.alterar_por_codigo(codigo, novos_dados)
-            self._atualizar_tabela_registos()
+            self._actualizar_tabela_registos()
             messagebox.showinfo("Sucesso", "Produto alterado com sucesso.")
         except ValueError as e:
             messagebox.showerror("Erro", str(e))
@@ -361,7 +361,7 @@ class AplicacaoPadaria:
             return
         try:
             removido = self.lista.eliminar_por_posicao(int(posicao))
-            self._atualizar_tabela_registos()
+            self._actualizar_tabela_registos()
             messagebox.showinfo("Sucesso", f"Produto '{removido.nome}' eliminado.")
         except (ValueError, IndexError) as e:
             messagebox.showerror("Erro", str(e))
@@ -374,13 +374,13 @@ class AplicacaoPadaria:
             return
         try:
             removido = self.lista.eliminar_por_codigo(int(codigo))
-            self._atualizar_tabela_registos()
+            self._actualizar_tabela_registos()
             messagebox.showinfo("Sucesso", f"Produto '{removido.nome}' eliminado.")
         except ValueError as e:
             messagebox.showerror("Erro", str(e))
 
     def acao_listar_todos(self):
-        self._atualizar_tabela_registos()
+        self._actualizar_tabela_registos()
         self.abas.select(self.tab_registos)
 
     def acao_listar_criterio(self):
@@ -388,7 +388,7 @@ class AplicacaoPadaria:
         if atributo is None:
             return
         resultados = self.lista.listar_por_criterio(atributo, valor)
-        self._atualizar_tabela_registos(resultados)
+        self._actualizar_tabela_registos(resultados)
         self.abas.select(self.tab_registos)
 
     def acao_listar_ordenado(self):
@@ -406,7 +406,7 @@ class AplicacaoPadaria:
 
         def confirmar():
             resultados = self.lista.listar_ordenado(combo.get(), decrescente_var.get())
-            self._atualizar_tabela_registos(resultados)
+            self._actualizar_tabela_registos(resultados)
             self.abas.select(self.tab_registos)
             janela.destroy()
 
@@ -449,8 +449,8 @@ class AplicacaoPadaria:
 
             produto.quantidade -= qtd
             self.lista_vendas.registar_venda(codigo, produto.nome, qtd, produto.preco)
-            self._atualizar_tabela_registos()
-            self._atualizar_tabela_vendas()
+            self._actualizar_tabela_registos()
+            self._actualizar_tabela_vendas()
             messagebox.showinfo("Sucesso",
                 f"Venda registada: {qtd}x {produto.nome} = {qtd * produto.preco:.2f} MT", parent=janela)
             janela.destroy()

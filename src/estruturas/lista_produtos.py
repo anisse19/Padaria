@@ -20,8 +20,8 @@ class ListaLigada:
     """Lista duplamente ligada que armazena os produtos da padaria."""
 
     def __init__(self):
-        self.cabeca = None
-        self.cauda = None
+        self.primeiro = None
+        self.ultimo = None
         self.tamanho = 0
 
     # ---------------- CADASTRO ----------------
@@ -30,46 +30,46 @@ class ListaLigada:
             raise ValueError(f"Já existe um produto com o código {codigo}.")
 
         novo_no = No(codigo, nome, categoria, preco, quantidade, validade)
-        if self.cabeca is None:
-            self.cabeca = novo_no
-            self.cauda = novo_no
+        if self.primeiro is None:
+            self.primeiro = novo_no
+            self.ultimo = novo_no
         else:
-            novo_no.anterior = self.cauda
-            self.cauda.proximo = novo_no
-            self.cauda = novo_no
+            novo_no.anterior = self.ultimo
+            self.ultimo.proximo = novo_no
+            self.ultimo = novo_no
         self.tamanho += 1
 
     # ---------------- BUSCA ----------------
     def buscar_por_codigo(self, codigo):
-        atual = self.cabeca
-        while atual is not None:
-            if atual.codigo == codigo:
-                return atual
-            atual = atual.proximo
+        actual = self.primeiro
+        while actual is not None:
+            if actual.codigo == codigo:
+                return actual
+            actual = actual.proximo
         return None
 
     def buscar_por_um_atributo(self, atributo, valor):
         resultados = []
-        atual = self.cabeca
+        actual = self.primeiro
         valor = str(valor).strip().lower()
-        while atual is not None:
-            valor_atributo = str(getattr(atual, atributo)).strip().lower()
+        while actual is not None:
+            valor_atributo = str(getattr(actual, atributo)).strip().lower()
             if valor_atributo == valor:
-                resultados.append(atual)
-            atual = atual.proximo
+                resultados.append(actual)
+            actual = actual.proximo
         return resultados
 
     def buscar_por_dois_atributos(self, atributo1, valor1, atributo2, valor2):
         resultados = []
-        atual = self.cabeca
+        actual = self.primeiro
         valor1 = str(valor1).strip().lower()
         valor2 = str(valor2).strip().lower()
-        while atual is not None:
-            v1 = str(getattr(atual, atributo1)).strip().lower()
-            v2 = str(getattr(atual, atributo2)).strip().lower()
+        while actual is not None:
+            v1 = str(getattr(actual, atributo1)).strip().lower()
+            v2 = str(getattr(actual, atributo2)).strip().lower()
             if v1 == valor1 and v2 == valor2:
-                resultados.append(atual)
-            atual = atual.proximo
+                resultados.append(actual)
+            actual = actual.proximo
         return resultados
 
     # ---------------- ALTERAÇÃO ----------------
@@ -86,12 +86,12 @@ class ListaLigada:
     def _desligar(self, no):
         """Retira o nó da lista, religando o anterior e o próximo entre si."""
         if no.anterior is None:
-            self.cabeca = no.proximo
+            self.primeiro = no.proximo
         else:
             no.anterior.proximo = no.proximo
 
         if no.proximo is None:
-            self.cauda = no.anterior
+            self.ultimo = no.anterior
         else:
             no.proximo.anterior = no.anterior
 
@@ -106,17 +106,17 @@ class ListaLigada:
 
         # Percorre a partir da extremidade mais próxima da posição pedida
         if posicao <= self.tamanho // 2:
-            atual = self.cabeca
+            actual = self.primeiro
             for _ in range(posicao - 1):
-                atual = atual.proximo
+                actual = actual.proximo
         else:
-            atual = self.cauda
+            actual = self.ultimo
             for _ in range(self.tamanho - posicao):
-                atual = atual.anterior
-        return self._desligar(atual)
+                actual = actual.anterior
+        return self._desligar(actual)
 
     def eliminar_por_codigo(self, codigo):
-        if self.cabeca is None:
+        if self.primeiro is None:
             raise ValueError("A lista está vazia.")
 
         no = self.buscar_por_codigo(codigo)
@@ -127,10 +127,10 @@ class ListaLigada:
     # ---------------- IMPRESSÃO ----------------
     def listar_todos(self):
         produtos = []
-        atual = self.cabeca
-        while atual is not None:
-            produtos.append(atual)
-            atual = atual.proximo
+        actual = self.primeiro
+        while actual is not None:
+            produtos.append(actual)
+            actual = actual.proximo
         return produtos
 
     def listar_por_criterio(self, atributo, valor):

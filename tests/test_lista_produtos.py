@@ -16,10 +16,10 @@ class TestListaLigada(unittest.TestCase):
 
     def codigos_de_tras_para_frente(self):
         codigos = []
-        atual = self.lista.cauda
-        while atual is not None:
-            codigos.append(atual.codigo)
-            atual = atual.anterior
+        actual = self.lista.ultimo
+        while actual is not None:
+            codigos.append(actual.codigo)
+            actual = actual.anterior
         return codigos
 
     def assert_ligacoes(self, esperado):
@@ -30,8 +30,8 @@ class TestListaLigada(unittest.TestCase):
 
     def test_cadastrar_adiciona_no_fim(self):
         self.assert_ligacoes([1, 2, 3])
-        self.assertIsNone(self.lista.cabeca.anterior)
-        self.assertIsNone(self.lista.cauda.proximo)
+        self.assertIsNone(self.lista.primeiro.anterior)
+        self.assertIsNone(self.lista.ultimo.proximo)
 
     def test_cadastrar_codigo_repetido_falha(self):
         with self.assertRaises(ValueError):
@@ -60,15 +60,15 @@ class TestListaLigada(unittest.TestCase):
         self.assertEqual(self.lista.eliminar_por_posicao(1).codigo, 1)
         self.assert_ligacoes([3])
 
-    def test_eliminar_ultima_posicao_atualiza_cauda(self):
+    def test_eliminar_ultima_posicao_actualiza_ultimo(self):
         self.assertEqual(self.lista.eliminar_por_posicao(3).codigo, 3)
         self.assert_ligacoes([1, 2])
 
     def test_eliminar_ate_esvaziar(self):
         for _ in range(3):
             self.lista.eliminar_por_posicao(1)
-        self.assertIsNone(self.lista.cabeca)
-        self.assertIsNone(self.lista.cauda)
+        self.assertIsNone(self.lista.primeiro)
+        self.assertIsNone(self.lista.ultimo)
         self.assert_ligacoes([])
 
     def test_eliminar_por_posicao_invalida(self):
