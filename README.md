@@ -3,7 +3,7 @@
 Sistema de Gestão de Padaria — Trabalho Prático 1 de Algoritmos e Estruturas de Dados
 (ISUTC — Engenharia Informática e de Telecomunicações).
 
-- **Estrutura de dados:** Lista Ligada (produtos e vendas)
+- **Estrutura de dados:** Lista Duplamente Ligada (produtos e vendas)
 - **Interface gráfica:** Tkinter
 - **Dependências:** nenhuma além da biblioteca padrão do Python 3
 

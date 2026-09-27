@@ -1,8 +1,9 @@
-"""Lista ligada simples que guarda os produtos da padaria."""
+"""Lista duplamente ligada que guarda os produtos da padaria."""
 
 
 class No:
-    """Nó da lista ligada. Cada nó guarda um produto e a referência ao próximo nó."""
+    """Nó da lista duplamente ligada. Cada nó guarda um produto e as referências
+    ao nó anterior e ao próximo nó."""
 
     def __init__(self, codigo, nome, categoria, preco, quantidade, validade):
         self.codigo = codigo
@@ -11,14 +12,16 @@ class No:
         self.preco = preco
         self.quantidade = quantidade
         self.validade = validade
+        self.anterior = None
         self.proximo = None
 
 
 class ListaLigada:
-    """Lista ligada simples que armazena os produtos da padaria."""
+    """Lista duplamente ligada que armazena os produtos da padaria."""
 
     def __init__(self):
         self.cabeca = None
+        self.cauda = None
         self.tamanho = 0
 
     # ---------------- CADASTRO ----------------
@@ -29,11 +32,11 @@ class ListaLigada:
         novo_no = No(codigo, nome, categoria, preco, quantidade, validade)
         if self.cabeca is None:
             self.cabeca = novo_no
+            self.cauda = novo_no
         else:
-            atual = self.cabeca
-            while atual.proximo is not None:
-                atual = atual.proximo
-            atual.proximo = novo_no
+            novo_no.anterior = self.cauda
+            self.cauda.proximo = novo_no
+            self.cauda = novo_no
         self.tamanho += 1
 
     # ---------------- BUSCA ----------------
@@ -80,45 +83,46 @@ class ListaLigada:
         return no
 
     # ---------------- ELIMINAÇÃO ----------------
+    def _desligar(self, no):
+        """Retira o nó da lista, religando o anterior e o próximo entre si."""
+        if no.anterior is None:
+            self.cabeca = no.proximo
+        else:
+            no.anterior.proximo = no.proximo
+
+        if no.proximo is None:
+            self.cauda = no.anterior
+        else:
+            no.proximo.anterior = no.anterior
+
+        no.anterior = None
+        no.proximo = None
+        self.tamanho -= 1
+        return no
+
     def eliminar_por_posicao(self, posicao):
         if posicao < 1 or posicao > self.tamanho:
             raise IndexError("Posição inválida.")
 
-        if posicao == 1:
-            removido = self.cabeca
-            self.cabeca = self.cabeca.proximo
-            self.tamanho -= 1
-            return removido
-
-        anterior = self.cabeca
-        for _ in range(posicao - 2):
-            anterior = anterior.proximo
-        removido = anterior.proximo
-        anterior.proximo = removido.proximo
-        self.tamanho -= 1
-        return removido
+        # Percorre a partir da extremidade mais próxima da posição pedida
+        if posicao <= self.tamanho // 2:
+            atual = self.cabeca
+            for _ in range(posicao - 1):
+                atual = atual.proximo
+        else:
+            atual = self.cauda
+            for _ in range(self.tamanho - posicao):
+                atual = atual.anterior
+        return self._desligar(atual)
 
     def eliminar_por_codigo(self, codigo):
         if self.cabeca is None:
             raise ValueError("A lista está vazia.")
 
-        if self.cabeca.codigo == codigo:
-            removido = self.cabeca
-            self.cabeca = self.cabeca.proximo
-            self.tamanho -= 1
-            return removido
-
-        anterior = self.cabeca
-        atual = self.cabeca.proximo
-        while atual is not None:
-            if atual.codigo == codigo:
-                anterior.proximo = atual.proximo
-                self.tamanho -= 1
-                return atual
-            anterior = atual
-            atual = atual.proximo
-
-        raise ValueError(f"Produto com código {codigo} não encontrado.")
+        no = self.buscar_por_codigo(codigo)
+        if no is None:
+            raise ValueError(f"Produto com código {codigo} não encontrado.")
+        return self._desligar(no)
 
     # ---------------- IMPRESSÃO ----------------
     def listar_todos(self):

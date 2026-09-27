@@ -14,9 +14,24 @@ class TestListaLigada(unittest.TestCase):
     def codigos(self, produtos):
         return [p.codigo for p in produtos]
 
+    def codigos_de_tras_para_frente(self):
+        codigos = []
+        atual = self.lista.cauda
+        while atual is not None:
+            codigos.append(atual.codigo)
+            atual = atual.anterior
+        return codigos
+
+    def assert_ligacoes(self, esperado):
+        """Confirma a ordem nos dois sentidos, para validar proximo e anterior."""
+        self.assertEqual(self.codigos(self.lista.listar_todos()), esperado)
+        self.assertEqual(self.codigos_de_tras_para_frente(), esperado[::-1])
+        self.assertEqual(self.lista.tamanho, len(esperado))
+
     def test_cadastrar_adiciona_no_fim(self):
-        self.assertEqual(self.lista.tamanho, 3)
-        self.assertEqual(self.codigos(self.lista.listar_todos()), [1, 2, 3])
+        self.assert_ligacoes([1, 2, 3])
+        self.assertIsNone(self.lista.cabeca.anterior)
+        self.assertIsNone(self.lista.cauda.proximo)
 
     def test_cadastrar_codigo_repetido_falha(self):
         with self.assertRaises(ValueError):
@@ -41,9 +56,20 @@ class TestListaLigada(unittest.TestCase):
 
     def test_eliminar_por_posicao(self):
         self.assertEqual(self.lista.eliminar_por_posicao(2).codigo, 2)
-        self.assertEqual(self.codigos(self.lista.listar_todos()), [1, 3])
+        self.assert_ligacoes([1, 3])
         self.assertEqual(self.lista.eliminar_por_posicao(1).codigo, 1)
-        self.assertEqual(self.lista.tamanho, 1)
+        self.assert_ligacoes([3])
+
+    def test_eliminar_ultima_posicao_atualiza_cauda(self):
+        self.assertEqual(self.lista.eliminar_por_posicao(3).codigo, 3)
+        self.assert_ligacoes([1, 2])
+
+    def test_eliminar_ate_esvaziar(self):
+        for _ in range(3):
+            self.lista.eliminar_por_posicao(1)
+        self.assertIsNone(self.lista.cabeca)
+        self.assertIsNone(self.lista.cauda)
+        self.assert_ligacoes([])
 
     def test_eliminar_por_posicao_invalida(self):
         with self.assertRaises(IndexError):
@@ -51,7 +77,9 @@ class TestListaLigada(unittest.TestCase):
 
     def test_eliminar_por_codigo(self):
         self.lista.eliminar_por_codigo(3)
-        self.assertEqual(self.codigos(self.lista.listar_todos()), [1, 2])
+        self.assert_ligacoes([1, 2])
+        self.lista.eliminar_por_codigo(1)
+        self.assert_ligacoes([2])
         with self.assertRaises(ValueError):
             self.lista.eliminar_por_codigo(3)
 

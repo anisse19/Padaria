@@ -1,10 +1,10 @@
-"""Lista ligada que guarda as vendas realizadas."""
+"""Lista duplamente ligada que guarda as vendas realizadas."""
 
 from datetime import datetime
 
 
 class NoVenda:
-    """Nó da lista ligada de vendas."""
+    """Nó da lista duplamente ligada de vendas."""
 
     def __init__(self, codigo_produto, nome_produto, quantidade, preco_unitario):
         self.codigo_produto = codigo_produto
@@ -13,25 +13,27 @@ class NoVenda:
         self.preco_unitario = preco_unitario
         self.total = quantidade * preco_unitario
         self.data = datetime.now().strftime("%d/%m/%Y %H:%M")
+        self.anterior = None
         self.proximo = None
 
 
 class ListaVendas:
-    """Lista ligada que armazena as vendas realizadas."""
+    """Lista duplamente ligada que armazena as vendas realizadas."""
 
     def __init__(self):
         self.cabeca = None
+        self.cauda = None
         self.tamanho = 0
 
     def registar_venda(self, codigo_produto, nome_produto, quantidade, preco_unitario):
         novo_no = NoVenda(codigo_produto, nome_produto, quantidade, preco_unitario)
         if self.cabeca is None:
             self.cabeca = novo_no
+            self.cauda = novo_no
         else:
-            atual = self.cabeca
-            while atual.proximo is not None:
-                atual = atual.proximo
-            atual.proximo = novo_no
+            novo_no.anterior = self.cauda
+            self.cauda.proximo = novo_no
+            self.cauda = novo_no
         self.tamanho += 1
         return novo_no
 
