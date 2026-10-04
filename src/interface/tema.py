@@ -144,5 +144,5 @@ def centrar_janela(janela, largura=None, altura=None):
     largura = largura or janela.winfo_reqwidth()
     altura = altura or janela.winfo_reqheight()
     x = (janela.winfo_screenwidth() - largura) // 2
-    y = (janela.winfo_screenheight() - altura) // 3  # ligeiramente acima do centro
+    y = (janela.winfo_screenheight() - altura) // 3 
     janela.geometry(f"{largura}x{altura}+{x}+{y}")
