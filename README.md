@@ -13,6 +13,9 @@ Sistema de Gestão de Padaria — Trabalho Prático 1 de Algoritmos e Estruturas
 No Eclipse: *File → Import → Existing Projects into Workspace*, escolher esta pasta
 e correr `principal.Main` (`src/principal/Main.java`).
 
+No VS Code (com a *Extension Pack for Java*): abrir a pasta `Padaria` e carregar no botão ▷ ou em
+*Run and Debug* (F5) → **Padaria**. A configuração está em `.vscode/`.
+
 Na linha de comandos, a partir da raiz do projecto:
 
 ```bash
