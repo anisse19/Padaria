@@ -1,4 +1,4 @@
-package padaria.telas;
+package listas_duplamente_ligadas;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -30,15 +30,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import listas_duplamente_ligadas.IntefaceGeral;
-import listas_duplamente_ligadas.ListaLigadas;
-import padaria.Config;
-import padaria.Utilizador;
-import padaria.estruturas.ListaProdutos;
-import padaria.estruturas.ListaVendas;
-import padaria.modelo.Atributo;
-import padaria.modelo.Produto;
-import padaria.modelo.Venda;
+import listas_duplamente_ligadas.Produto.Atributo;
+
 
 /**
  * Janela principal do sistema (depois do login).
@@ -58,7 +51,7 @@ import padaria.modelo.Venda;
  * Para acrescentar uma operação:
  *  1. criar o método acao...() (diálogos com novaJanela/mostrarJanela);
  *  2. acrescentá-la à lista em construirSidebar;
- *  3. se for só do Dono: pô-la em Config.OPERACOES_RESTRITAS_AO_DONO e chamar
+ *  3. se for só do Dono: pô-la em SistemaPadaria.OPERACOES_RESTRITAS_AO_DONO e chamar
  *     exigeDono() no início.
  */
 public class AplicacaoPadaria {
@@ -101,7 +94,7 @@ public class AplicacaoPadaria {
 		this.eDono = perfil.eDono();
 		this.aoTerminarSessao = aoTerminarSessao;
 
-		root.setTitle(Config.NOME_PADARIA + " - Sistema de Gestão");
+		root.setTitle(SistemaPadaria.NOME_PADARIA + " - Sistema de Gestão");
 
 		popularExemplo();
 		construirLayout();
@@ -109,7 +102,7 @@ public class AplicacaoPadaria {
 		root.setResizable(true);
 		root.setMinimumSize(new Dimension(LARGURA_MIN, ALTURA_MIN));
 		root.setSize(LARGURA, ALTURA);
-		Tema.centrarJanela(root);
+		SistemaPadaria.centrarJanela(root);
 		root.revalidate();
 		root.repaint();
 	}
@@ -134,18 +127,18 @@ public class AplicacaoPadaria {
 
 	private JPanel construirBarraTopo() {
 		JPanel topo = new JPanel(new BorderLayout());
-		topo.setBackground(Tema.PAINEL);
+		topo.setBackground(SistemaPadaria.PAINEL);
 		topo.setBorder(BorderFactory.createEmptyBorder(10, 16, 10, 16));
 
-		topo.add(Tema.rotulo(Config.NOME_PADARIA, Tema.FONTE_SECCAO, Tema.CROSTA), BorderLayout.WEST);
+		topo.add(SistemaPadaria.rotulo(SistemaPadaria.NOME_PADARIA, SistemaPadaria.FONTE_SECCAO, SistemaPadaria.CROSTA), BorderLayout.WEST);
 
 		JPanel direita = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
 		direita.setOpaque(false);
-		direita.add(Tema.rotulo(saudacao(), Tema.FONTE_NORMAL, Tema.TEXTO));
+		direita.add(SistemaPadaria.rotulo(saudacao(), SistemaPadaria.FONTE_NORMAL, SistemaPadaria.TEXTO));
 		direita.add(Box.createHorizontalStrut(24));
-		direita.add(Tema.rotulo("Perfil: " + perfil.getTipo(), Tema.FONTE_PEQUENA, Tema.TEXTO_SUAVE));
+		direita.add(SistemaPadaria.rotulo("Perfil: " + perfil.getTipo(), SistemaPadaria.FONTE_PEQUENA, SistemaPadaria.TEXTO_SUAVE));
 		direita.add(Box.createHorizontalStrut(16));
-		JButton btnSair = Tema.botaoSecundario("Sair");
+		JButton btnSair = SistemaPadaria.botaoSecundario("Sair");
 		btnSair.addActionListener(e -> terminarSessao());
 		direita.add(btnSair);
 		topo.add(direita, BorderLayout.EAST);
@@ -180,11 +173,11 @@ public class AplicacaoPadaria {
 	private JPanel construirSidebar() {
 		JPanel sidebar = new JPanel();
 		sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
-		sidebar.setBackground(Tema.CROSTA);
+		sidebar.setBackground(SistemaPadaria.CROSTA);
 		sidebar.setPreferredSize(new Dimension(230, 0));  // largura fixa
 		sidebar.setBorder(BorderFactory.createEmptyBorder(18, 8, 8, 8));
 
-		JLabel titulo = Tema.rotulo("Operações", Tema.FONTE_SECCAO, Tema.BRANCO);
+		JLabel titulo = SistemaPadaria.rotulo("Operações", SistemaPadaria.FONTE_SECCAO, SistemaPadaria.BRANCO);
 		titulo.setBorder(BorderFactory.createEmptyBorder(0, 8, 12, 0));
 		titulo.setAlignmentX(Component.LEFT_ALIGNMENT);
 		sidebar.add(titulo);
@@ -205,12 +198,12 @@ public class AplicacaoPadaria {
 		operacoes.put("Listar ordenado", this::acaoListarOrdenado);
 
 		for (Map.Entry<String, Runnable> operacao : operacoes.entrySet()) {
-			boolean restrita = Config.OPERACOES_RESTRITAS_AO_DONO.contains(operacao.getKey());
+			boolean restrita = SistemaPadaria.OPERACOES_RESTRITAS_AO_DONO.contains(operacao.getKey());
 			if (restrita && !eDono) {
 				continue;  // a operação nem sequer é apresentada a quem não é o Dono
 			}
 			final Runnable comando = operacao.getValue();
-			JButton btn = Tema.botaoSidebar(operacao.getKey());
+			JButton btn = SistemaPadaria.botaoSidebar(operacao.getKey());
 			btn.setAlignmentX(Component.LEFT_ALIGNMENT);
 			btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, btn.getPreferredSize().height));
 			btn.addActionListener(e -> comando.run());
@@ -232,7 +225,7 @@ public class AplicacaoPadaria {
 		}
 		modeloRegistos = modeloSoLeitura(colunas);
 		tabelaRegistos = new JTable(modeloRegistos);
-		Tema.configurarTabela(tabelaRegistos);
+		SistemaPadaria.configurarTabela(tabelaRegistos);
 
 		tabRegistos = new JPanel(new BorderLayout());
 		tabRegistos.add(new JScrollPane(tabelaRegistos), BorderLayout.CENTER);
@@ -242,18 +235,18 @@ public class AplicacaoPadaria {
 		modeloVendas = modeloSoLeitura(new String[] {
 				"Data", "Código", "Produto", "Qtd Solicitada", "Preço Unitário", "Total" });
 		JTable tabelaVendas = new JTable(modeloVendas);
-		Tema.configurarTabela(tabelaVendas);
+		SistemaPadaria.configurarTabela(tabelaVendas);
 
 		JPanel resumo = new JPanel(new BorderLayout());
 		resumo.setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
 		JPanel totais = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		labelTotalQtd = Tema.rotulo("Total Qtd: 0", Tema.FONTE_NEGRITO, Tema.CROSTA);
-		labelTotalVendas = Tema.rotulo("Total Vendas: 0.00 " + Config.MOEDA, Tema.FONTE_NEGRITO, Tema.CROSTA);
+		labelTotalQtd = SistemaPadaria.rotulo("Total Qtd: 0", SistemaPadaria.FONTE_NEGRITO, SistemaPadaria.CROSTA);
+		labelTotalVendas = SistemaPadaria.rotulo("Total Vendas: 0.00 " + SistemaPadaria.MOEDA, SistemaPadaria.FONTE_NEGRITO, SistemaPadaria.CROSTA);
 		totais.add(labelTotalQtd);
 		totais.add(Box.createHorizontalStrut(24));
 		totais.add(labelTotalVendas);
 		resumo.add(totais, BorderLayout.WEST);
-		JButton btnRegistar = Tema.botao("+ Registar Venda");
+		JButton btnRegistar = SistemaPadaria.botao("+ Registar Venda");
 		btnRegistar.addActionListener(e -> registarVenda());
 		resumo.add(btnRegistar, BorderLayout.EAST);
 
@@ -319,7 +312,7 @@ public class AplicacaoPadaria {
 					String.format("%.2f", v.getPrecoUnitario()), String.format("%.2f", v.getTotal()) });
 		}
 		labelTotalQtd.setText("Total Qtd: " + listaVendas.totalQuantidade());
-		labelTotalVendas.setText(String.format("Total Vendas: %.2f %s", listaVendas.totalVendas(), Config.MOEDA));
+		labelTotalVendas.setText(String.format("Total Vendas: %.2f %s", listaVendas.totalVendas(), SistemaPadaria.MOEDA));
 	}
 
 	// ---------------- PERMISSÕES ----------------
@@ -365,7 +358,7 @@ public class AplicacaoPadaria {
 		};
 		entradaCodigo.addActionListener(e -> buscar.run());
 
-		JButton btnBuscar = Tema.botao("Buscar");
+		JButton btnBuscar = SistemaPadaria.botao("Buscar");
 		btnBuscar.addActionListener(e -> buscar.run());
 		grelha(corpo, btnBuscar, 1, 0, 2);
 		mostrarJanela(janela);
@@ -464,7 +457,7 @@ public class AplicacaoPadaria {
 		grelha(corpo, combo2, 1, 1, 1);
 		grelha(corpo, entrada2, 1, 2, 1);
 
-		JButton btnBuscar = Tema.botao("Buscar");
+		JButton btnBuscar = SistemaPadaria.botao("Buscar");
 		btnBuscar.addActionListener(e -> {
 			Atributo atributo1 = (Atributo) combo1.getSelectedItem();
 			Atributo atributo2 = (Atributo) combo2.getSelectedItem();
@@ -555,7 +548,7 @@ public class AplicacaoPadaria {
 		decrescente.setOpaque(false);
 		grelha(corpo, decrescente, 1, 0, 2);
 
-		JButton btnOrdenar = Tema.botao("Ordenar");
+		JButton btnOrdenar = SistemaPadaria.botao("Ordenar");
 		btnOrdenar.addActionListener(e -> {
 			Atributo atributo = (Atributo) combo.getSelectedItem();
 			if (atributo == null) {
@@ -609,13 +602,13 @@ public class AplicacaoPadaria {
 			actualizarTabelaVendas();
 			abas.setSelectedComponent(tabVendas);
 			info(janela, "Sucesso", String.format("Venda registada: %dx %s = %.2f %s",
-					qtd, produto.getNome(), qtd * produto.getPreco(), Config.MOEDA));
+					qtd, produto.getNome(), qtd * produto.getPreco(), SistemaPadaria.MOEDA));
 			janela.dispose();
 		};
 		entradaCodigo.addActionListener(e -> entradaQtd.requestFocusInWindow());
 		entradaQtd.addActionListener(e -> confirmar.run());
 
-		JButton btnRegistar = Tema.botao("Registar Venda");
+		JButton btnRegistar = SistemaPadaria.botao("Registar Venda");
 		btnRegistar.addActionListener(e -> confirmar.run());
 		grelha(corpo, btnRegistar, 2, 0, 2);
 		mostrarJanela(janela);
@@ -672,7 +665,7 @@ public class AplicacaoPadaria {
 		c.gridwidth = 3;
 		c.anchor = GridBagConstraints.WEST;
 		c.insets = new Insets(0, 0, 14, 0);
-		corpo.add(Tema.rotulo(titulo, Tema.FONTE_SECCAO, Tema.CROSTA), c);
+		corpo.add(SistemaPadaria.rotulo(titulo, SistemaPadaria.FONTE_SECCAO, SistemaPadaria.CROSTA), c);
 
 		final Map<Atributo, JTextField> entradas = new EnumMap<Atributo, JTextField>(Atributo.class);
 		for (Atributo atributo : Atributo.values()) {
@@ -684,7 +677,7 @@ public class AplicacaoPadaria {
 			}
 			grelha(corpo, entrada, linha, 1, 1);
 			if (atributo.getDica() != null) {
-				JLabel dica = Tema.rotulo(atributo.getDica(), Tema.FONTE_PEQUENA, Tema.TEXTO_SUAVE);
+				JLabel dica = SistemaPadaria.rotulo(atributo.getDica(), SistemaPadaria.FONTE_PEQUENA, SistemaPadaria.TEXTO_SUAVE);
 				GridBagConstraints cd = new GridBagConstraints();
 				cd.gridx = 2;
 				cd.gridy = linha;
@@ -698,7 +691,7 @@ public class AplicacaoPadaria {
 			entradas.get(Atributo.CODIGO).setEnabled(false);  // o código identifica o produto
 		}
 
-		JButton btnConfirmar = Tema.botao(textoBotao);
+		JButton btnConfirmar = SistemaPadaria.botao(textoBotao);
 		btnConfirmar.addActionListener(e -> {
 			Map<Atributo, String> dados = new EnumMap<Atributo, String>(Atributo.class);
 			for (Map.Entry<Atributo, JTextField> entrada : entradas.entrySet()) {
@@ -754,7 +747,7 @@ public class AplicacaoPadaria {
 		};
 		entrada.addActionListener(e -> confirmar.run());
 
-		JButton btnConfirmar = Tema.botao("Confirmar");
+		JButton btnConfirmar = SistemaPadaria.botao("Confirmar");
 		btnConfirmar.addActionListener(e -> confirmar.run());
 		grelha(corpo, btnConfirmar, 2, 0, 2);
 		mostrarJanela(janela);
@@ -778,7 +771,7 @@ public class AplicacaoPadaria {
 		};
 		entrada.addActionListener(e -> confirmar.run());
 
-		JButton btnConfirmar = Tema.botao("Confirmar");
+		JButton btnConfirmar = SistemaPadaria.botao("Confirmar");
 		btnConfirmar.addActionListener(e -> confirmar.run());
 		grelha(corpo, btnConfirmar, 1, 0, 2);
 		mostrarJanela(janela);

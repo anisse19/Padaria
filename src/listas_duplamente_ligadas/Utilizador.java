@@ -1,10 +1,10 @@
-package padaria;
+package listas_duplamente_ligadas;
 
 /** Um utilizador do sistema. É o "perfil" que a AplicacaoPadaria recebe depois do login. */
 public class Utilizador {
 
 	private final String senha;
-	private final String tipo;   // Config.PERFIL_DONO ou Config.PERFIL_FUNCIONARIO
+	private final String tipo;   // SistemaPadaria.PERFIL_DONO ou SistemaPadaria.PERFIL_FUNCIONARIO
 	private final String nome;
 
 	public Utilizador(String senha, String tipo, String nome) {
@@ -26,6 +26,6 @@ public class Utilizador {
 	}
 
 	public boolean eDono() {
-		return Config.PERFIL_DONO.equals(tipo);
+		return SistemaPadaria.PERFIL_DONO.equals(tipo);
 	}
 }

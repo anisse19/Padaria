@@ -1,7 +1,5 @@
-package padaria.estruturas;
+package listas_duplamente_ligadas;
 
-import listas_duplamente_ligadas.ListaLigadas;
-import padaria.modelo.Venda;
 
 /**
  * Lista duplamente ligada que guarda as vendas realizadas.

@@ -1,4 +1,4 @@
-package padaria.telas;
+package listas_duplamente_ligadas;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -9,25 +9,84 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
 /**
- * Tema visual: cores quentes de padaria.
+ * Ponto de entrada do sistema, com a configuração e o tema visual.
  *
- * Todas as cores e fontes vivem aqui; os outros ficheiros usam Tema.FUNDO,
- * Tema.FONTE_NORMAL, etc., e os métodos botao...() / rotulo...().
+ * Fluxo dos ecrãs: Tela inicial -> Login -> Aplicação principal. Os ecrãs não
+ * se conhecem: cada um recebe um callback que chama quando termina. Para mudar
+ * o fluxo, só se mexe em novaSessao().
  */
-public final class Tema {
+public final class SistemaPadaria {
+
+	// ================= ARRANQUE =================
+
+	public static void main(String[] args) {
+		aplicarTema();
+		SwingUtilities.invokeLater(SistemaPadaria::novaSessao);
+	}
+
+	/** Abre uma janela nova na tela inicial. Usado no arranque e no botão "Sair". */
+	private static void novaSessao() {
+		final JFrame root = new JFrame();
+		// Fechar a janela termina o programa (não há mais janelas abertas).
+		root.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		TelaLogin.AoAutenticar aoAutenticar = perfil -> new AplicacaoPadaria(root, perfil, SistemaPadaria::novaSessao);
+		Runnable aoAcessar = () -> new TelaLogin(root, aoAutenticar);
+		new TelaInicial(root, aoAcessar);
+
+		root.setVisible(true);
+	}
+
+	// ================= CONFIGURAÇÃO =================
+	// Valores de negócio que podem mudar sem mexer no resto do código.
+
+
+	public static final String NOME_PADARIA = "Padaria Adonai";
+	public static final String MOEDA = "MT";
+
+	// Comparar sempre com estas constantes, nunca com texto escrito à mão.
+	public static final String PERFIL_DONO = "Dono da Padaria";
+	public static final String PERFIL_FUNCIONARIO = "Funcionário";
+
+	// Senhas em texto simples: aceitável só num trabalho académico.
+	public static final Map<String, Utilizador> UTILIZADORES = new HashMap<String, Utilizador>();
+	static {
+		UTILIZADORES.put("dono", new Utilizador("dono123", PERFIL_DONO, "Proprietário(a)"));
+		UTILIZADORES.put("funcionario", new Utilizador("func123", PERFIL_FUNCIONARIO, "Funcionário(a)"));
+	}
+
+	// Operações reservadas ao Dono. Têm de ser iguais ao texto dos botões em
+	// AplicacaoPadaria.construirSidebar.
+	public static final Set<String> OPERACOES_RESTRITAS_AO_DONO = new HashSet<String>(Arrays.asList(
+			"Cadastrar",
+			"Alterar (por código)",
+			"Eliminar por posição",
+			"Eliminar por código"));
+
+	// ================= TEMA VISUAL =================
+	// Cores quentes de padaria. Todas as cores e fontes vivem aqui; as telas
+	// usam SistemaPadaria.FUNDO, SistemaPadaria.botao(...), etc.
+
 
 	public static final Color FUNDO = new Color(0xFBF3E4);          // miolo do pão
 	public static final Color PAINEL = new Color(0xF3E1C7);         // massa: barra de topo, linhas alternadas
@@ -48,11 +107,9 @@ public final class Tema {
 	public static final Font FONTE_NEGRITO = new Font("SansSerif", Font.BOLD, 14);
 	public static final Font FONTE_PEQUENA = new Font("SansSerif", Font.PLAIN, 13);
 
-	private Tema() {
-	}
 
 	/** Chamar uma vez, antes de criar qualquer janela. */
-	public static void aplicar() {
+	public static void aplicarTema() {
 		try {
 			// O "Metal" respeita as cores dos componentes em todos os sistemas
 			// (o aspecto nativo do macOS/Windows ignora-as em botões).
@@ -195,5 +252,9 @@ public final class Tema {
 	/** Margem interior vazia, em píxeis. */
 	public static void margem(JComponent componente, int vertical, int horizontal) {
 		componente.setBorder(BorderFactory.createEmptyBorder(vertical, horizontal, vertical, horizontal));
+	}
+
+
+	private SistemaPadaria() {
 	}
 }

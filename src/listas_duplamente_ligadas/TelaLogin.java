@@ -1,4 +1,4 @@
-package padaria.telas;
+package listas_duplamente_ligadas;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -16,8 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import padaria.Config;
-import padaria.Utilizador;
 
 /** Ecrã de login com controlo de acesso. */
 public class TelaLogin {
@@ -33,19 +31,19 @@ public class TelaLogin {
 	private final AoAutenticar aoAutenticar;
 	private final JTextField entradaUtilizador = new JTextField();
 	private final JPasswordField entradaSenha = new JPasswordField();
-	private final JLabel labelErro = Tema.rotulo(" ", Tema.FONTE_PEQUENA, Tema.ERRO);
+	private final JLabel labelErro = SistemaPadaria.rotulo(" ", SistemaPadaria.FONTE_PEQUENA, SistemaPadaria.ERRO);
 
 	public TelaLogin(JFrame janela, AoAutenticar aoAutenticar) {
 		this.aoAutenticar = aoAutenticar;
 
-		janela.setTitle(Config.NOME_PADARIA + " - Login");
+		janela.setTitle(SistemaPadaria.NOME_PADARIA + " - Login");
 
 		JPanel frame = new JPanel();
 		frame.setLayout(new BoxLayout(frame, BoxLayout.Y_AXIS));
 		frame.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
 
-		adicionar(frame, Tema.rotulo(Config.NOME_PADARIA, Tema.FONTE_TITULO, Tema.CROSTA), true);
-		adicionar(frame, Tema.rotulo("Bem-vindo(a) de volta ao forno", Tema.FONTE_SUBTITULO, Tema.TEXTO_SUAVE), true);
+		adicionar(frame, SistemaPadaria.rotulo(SistemaPadaria.NOME_PADARIA, SistemaPadaria.FONTE_TITULO, SistemaPadaria.CROSTA), true);
+		adicionar(frame, SistemaPadaria.rotulo("Bem-vindo(a) de volta ao forno", SistemaPadaria.FONTE_SUBTITULO, SistemaPadaria.TEXTO_SUAVE), true);
 		frame.add(Box.createVerticalStrut(30));
 
 		adicionar(frame, new JLabel("Utilizador"), false);
@@ -59,7 +57,7 @@ public class TelaLogin {
 		adicionar(frame, labelErro, true);
 		frame.add(Box.createVerticalStrut(8));
 
-		JButton btnEntrar = Tema.botao("Entrar");
+		JButton btnEntrar = SistemaPadaria.botao("Entrar");
 		btnEntrar.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 		adicionar(frame, btnEntrar, false);
 
@@ -83,7 +81,7 @@ public class TelaLogin {
 		janela.setMinimumSize(null);
 		janela.setSize(LARGURA, ALTURA);
 		janela.setResizable(false);
-		Tema.centrarJanela(janela);
+		SistemaPadaria.centrarJanela(janela);
 		janela.revalidate();
 		entradaUtilizador.requestFocusInWindow();
 	}
@@ -92,7 +90,7 @@ public class TelaLogin {
 		String utilizador = entradaUtilizador.getText().trim();
 		String senha = new String(entradaSenha.getPassword());
 
-		Utilizador registo = Config.UTILIZADORES.get(utilizador);
+		Utilizador registo = SistemaPadaria.UTILIZADORES.get(utilizador);
 		// Mensagem genérica: não revela se o erro foi no utilizador ou na senha.
 		if (registo == null || !registo.senhaCorrecta(senha)) {
 			labelErro.setText("Utilizador ou senha inválidos.");
@@ -103,10 +101,10 @@ public class TelaLogin {
 	}
 
 	private static JTextField campo(JTextField campo) {
-		campo.setBackground(Tema.BRANCO);
-		campo.setForeground(Tema.TEXTO);
+		campo.setBackground(SistemaPadaria.BRANCO);
+		campo.setForeground(SistemaPadaria.TEXTO);
 		campo.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder(Tema.PAINEL, 2),
+				BorderFactory.createLineBorder(SistemaPadaria.PAINEL, 2),
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		campo.setMaximumSize(new Dimension(Integer.MAX_VALUE, campo.getPreferredSize().height));
 		return campo;

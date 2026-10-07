@@ -10,3 +10,7 @@ target/
 *.iml
 .vscode/
 .DS_Store
+
+# Restos da versão Python
+__pycache__/
+*.pyc

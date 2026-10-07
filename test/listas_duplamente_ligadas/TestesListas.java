@@ -1,16 +1,13 @@
-package padaria;
+package listas_duplamente_ligadas;
 
 import java.util.Arrays;
 
-import listas_duplamente_ligadas.IntefaceGeral;
-import padaria.estruturas.ListaProdutos;
-import padaria.estruturas.ListaVendas;
-import padaria.modelo.Atributo;
-import padaria.modelo.Produto;
+import listas_duplamente_ligadas.Produto.Atributo;
+
 
 /**
  * Testes das listas, sem bibliotecas externas. Correr com:
- *   java -cp bin padaria.TestesListas
+ *   java -cp bin listas_duplamente_ligadas.TestesListas
  * Termina com código 1 se algum teste falhar.
  */
 public class TestesListas {
