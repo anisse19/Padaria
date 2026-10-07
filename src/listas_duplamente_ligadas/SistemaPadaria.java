@@ -18,48 +18,21 @@ import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
 /**
- * Ponto de entrada do sistema, com a configuração e o tema visual.
- *
- * Fluxo dos ecrãs: Tela inicial -> Login -> Aplicação principal. Os ecrãs não
- * se conhecem: cada um recebe um callback que chama quando termina. Para mudar
- * o fluxo, só se mexe em novaSessao().
+ * Configuração e tema visual do sistema. O programa arranca em principal.Main.
  */
 public final class SistemaPadaria {
 
-	// ================= ARRANQUE =================
-
-	public static void main(String[] args) {
-		aplicarTema();
-		SwingUtilities.invokeLater(SistemaPadaria::novaSessao);
-	}
-
-	/** Abre uma janela nova na tela inicial. Usado no arranque e no botão "Sair". */
-	private static void novaSessao() {
-		final JFrame root = new JFrame();
-		// Fechar a janela termina o programa (não há mais janelas abertas).
-		root.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-		TelaLogin.AoAutenticar aoAutenticar = perfil -> new AplicacaoPadaria(root, perfil, SistemaPadaria::novaSessao);
-		Runnable aoAcessar = () -> new TelaLogin(root, aoAutenticar);
-		new TelaInicial(root, aoAcessar);
-
-		root.setVisible(true);
-	}
-
 	// ================= CONFIGURAÇÃO =================
 	// Valores de negócio que podem mudar sem mexer no resto do código.
-
 
 	public static final String NOME_PADARIA = "Padaria Adonai";
 	public static final String MOEDA = "MT";

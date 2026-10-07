@@ -11,13 +11,13 @@ Sistema de Gestão de Padaria — Trabalho Prático 1 de Algoritmos e Estruturas
 ## Como executar
 
 No Eclipse: *File → Import → Existing Projects into Workspace*, escolher esta pasta
-e correr `SistemaPadaria`.
+e correr `principal.Main` (`src/principal/Main.java`).
 
 Na linha de comandos, a partir da raiz do projecto:
 
 ```bash
-javac -encoding UTF-8 -d bin -sourcepath src src/listas_duplamente_ligadas/SistemaPadaria.java
-java -cp bin listas_duplamente_ligadas.SistemaPadaria
+javac -encoding UTF-8 -d bin -sourcepath src src/principal/Main.java
+java -cp bin principal.Main
 ```
 
 Utilizadores de teste:
@@ -42,6 +42,8 @@ java -cp bin listas_duplamente_ligadas.TestesListas
 ```
 Padaria/
 ├── src/
+│   ├── principal/
+│   │   └── Main.java                  # Ponto de entrada: é este que se corre
 │   ├── imagens/
 │   │   └── fundo_inicial.png          # Imagem da tela inicial
 │   └── listas_duplamente_ligadas/
@@ -53,12 +55,15 @@ Padaria/
 │       ├── Produto.java               # Elemento da lista de produtos (+ enum Atributo)
 │       ├── Venda.java                 # Elemento da lista de vendas
 │       ├── Utilizador.java
-│       ├── SistemaPadaria.java        # main(), configuração (utilizadores, permissões) e tema visual
+│       ├── SistemaPadaria.java        # Configuração (utilizadores, permissões) e tema visual
 │       ├── TelaInicial.java           # Imagem e botão "Acessar"
 │       ├── TelaLogin.java             # Autenticação
 │       └── AplicacaoPadaria.java      # Janela principal (sidebar, formulários, abas)
-└── test/
-    └── listas_duplamente_ligadas/TestesListas.java
+├── test/
+│   └── listas_duplamente_ligadas/TestesListas.java
+└── docs/
+    ├── Referencia_do_Codigo.pdf       # Explicação do sistema e referência de todas as classes
+    └── fonte/gerar_referencia.py      # Gera o PDF (reportlab)
 ```
 
 `ListaProdutos` e `ListaVendas` herdam de `ListaLigadas` e fazem tudo através dos
