@@ -1,7 +1,12 @@
-__pycache__/
-*.pyc
-.venv/
-venv/
-.DS_Store
+# Classes compiladas
+bin/
+out/
+target/
+*.class
+
+# IDEs
+.settings/
 .idea/
+*.iml
 .vscode/
+.DS_Store
