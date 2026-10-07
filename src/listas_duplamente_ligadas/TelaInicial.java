@@ -1,4 +1,4 @@
-package padaria.telas;
+package listas_duplamente_ligadas;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -13,26 +13,26 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import padaria.Config;
 
 /** Tela inicial (splash): nome da padaria sobre uma imagem de fundo e um botão "Acessar". */
 public class TelaInicial {
 
-	// Relativo à pasta do projecto (é a pasta de trabalho no Eclipse e no "java -cp bin").
-	private static final String CAMINHO_IMAGEM_FUNDO = "assets/imagens/fundo.png";
+	// Está no pacote "imagens" dentro de src; o Eclipse copia-a para bin junto com as classes.
+	private static final String CAMINHO_IMAGEM_FUNDO = "/imagens/fundo_inicial.png";
 
 	private static final int LARGURA = 640;
 	private static final int ALTURA_IMAGEM = 320;
 	private static final int ALTURA_RODAPE = 90;
 
 	public TelaInicial(final JFrame janela, final Runnable aoAcessar) {
-		janela.setTitle(Config.NOME_PADARIA);
+		janela.setTitle(SistemaPadaria.NOME_PADARIA);
 
 		final BufferedImage imagemFundo = carregarImagem();
 
@@ -49,20 +49,20 @@ public class TelaInicial {
 					g2.drawImage(imagemFundo, centroX - imagemFundo.getWidth() / 2,
 							centroY - imagemFundo.getHeight() / 2, null);
 				}
-				textoComSombra(g2, centroX, centroY + 10, Config.NOME_PADARIA, new Font("Georgia", Font.BOLD, 36));
+				textoComSombra(g2, centroX, centroY + 10, SistemaPadaria.NOME_PADARIA, new Font("Georgia", Font.BOLD, 36));
 				textoComSombra(g2, centroX, centroY + 55, "Pão quentinho, feito com carinho",
 						new Font("Georgia", Font.ITALIC, 18));
 			}
 		};
 		// Fundo escuro: quando a janela é maior do que a imagem, a margem tem a cor do rodapé.
-		canvas.setBackground(Tema.CROSTA_ESCURA);
+		canvas.setBackground(SistemaPadaria.CROSTA_ESCURA);
 		canvas.setPreferredSize(new Dimension(LARGURA, ALTURA_IMAGEM));
 
 		JPanel rodape = new JPanel(new GridBagLayout());  // GridBag sem restrições = centrado
-		rodape.setBackground(Tema.CROSTA_ESCURA);
+		rodape.setBackground(SistemaPadaria.CROSTA_ESCURA);
 		rodape.setPreferredSize(new Dimension(LARGURA, ALTURA_RODAPE));
 
-		JButton btnAcessar = Tema.botao("Acessar");
+		JButton btnAcessar = SistemaPadaria.botao("Acessar");
 		btnAcessar.setFont(new Font("SansSerif", Font.BOLD, 16));
 		btnAcessar.setPreferredSize(new Dimension(200, 44));
 		btnAcessar.addActionListener(new ActionListener() {
@@ -83,13 +83,18 @@ public class TelaInicial {
 		janela.pack();
 		// Nunca mais pequena do que a imagem + rodapé, para não cortar nada.
 		janela.setMinimumSize(janela.getSize());
-		Tema.centrarJanela(janela);
+		SistemaPadaria.centrarJanela(janela);
 		btnAcessar.requestFocusInWindow();
 	}
 
 	private static BufferedImage carregarImagem() {
 		try {
-			return ImageIO.read(new File(CAMINHO_IMAGEM_FUNDO));
+			URL imagem = TelaInicial.class.getResource(CAMINHO_IMAGEM_FUNDO);
+			if (imagem == null) {
+				// Compilado só com javac (sem copiar a imagem para bin): ler de src.
+				return ImageIO.read(new File("src" + CAMINHO_IMAGEM_FUNDO));
+			}
+			return ImageIO.read(imagem);
 		} catch (IOException e) {
 			return null;  // sem imagem fica só o fundo castanho
 		}
@@ -100,9 +105,9 @@ public class TelaInicial {
 		g.setFont(fonte);
 		FontMetrics metricas = g.getFontMetrics();
 		int x = centroX - metricas.stringWidth(texto) / 2;
-		g.setColor(Tema.CROSTA_ESCURA);
+		g.setColor(SistemaPadaria.CROSTA_ESCURA);
 		g.drawString(texto, x + 2, y + 2);
-		g.setColor(Tema.BRANCO);
+		g.setColor(SistemaPadaria.BRANCO);
 		g.drawString(texto, x, y);
 	}
 }

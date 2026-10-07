@@ -1,4 +1,4 @@
-package padaria.modelo;
+package listas_duplamente_ligadas;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

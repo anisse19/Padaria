@@ -11,13 +11,13 @@ Sistema de Gestão de Padaria — Trabalho Prático 1 de Algoritmos e Estruturas
 ## Como executar
 
 No Eclipse: *File → Import → Existing Projects into Workspace*, escolher esta pasta
-e correr `padaria.Main`.
+e correr `SistemaPadaria`.
 
 Na linha de comandos, a partir da raiz do projecto:
 
 ```bash
-javac -encoding UTF-8 -d bin $(find src test -name "*.java")
-java -cp bin padaria.Main
+javac -encoding UTF-8 -d bin -sourcepath src src/listas_duplamente_ligadas/SistemaPadaria.java
+java -cp bin listas_duplamente_ligadas.SistemaPadaria
 ```
 
 Utilizadores de teste:
@@ -32,38 +32,33 @@ O Funcionário não vê as operações de cadastrar, alterar e eliminar.
 ## Testes
 
 ```bash
-java -cp bin padaria.TestesListas
+javac -encoding UTF-8 -d bin -sourcepath src:test test/listas_duplamente_ligadas/TestesListas.java
+java -cp bin listas_duplamente_ligadas.TestesListas
 ```
+(No Windows, `src;test` em vez de `src:test`.)
 
 ## Estrutura do projecto
 
 ```
 Padaria/
-├── assets/
-│   └── imagens/fundo.png                 # Imagem da tela inicial
 ├── src/
-│   ├── listas_duplamente_ligadas/        # Base: a lista duplamente ligada
-│   │   ├── IntefaceGeral.java            #   operações da lista
-│   │   ├── No.java                       #   nó (anterior, elemento, próximo)
-│   │   └── ListaLigadas.java             #   implementação
-│   └── padaria/
-│       ├── Main.java                     # Ponto de entrada: Tela inicial -> Login -> Aplicação
-│       ├── Config.java                   # Nome da padaria, moeda, utilizadores e permissões
+│   ├── imagens/
+│   │   └── fundo_inicial.png          # Imagem da tela inicial
+│   └── listas_duplamente_ligadas/
+│       ├── IntefaceGeral.java         # Operações da lista
+│       ├── No.java                    # Nó (anterior, elemento, próximo)
+│       ├── ListaLigadas.java          # Lista duplamente ligada (base de tudo)
+│       ├── ListaProdutos.java         # extends ListaLigadas: cadastro, busca, eliminação, ordenação
+│       ├── ListaVendas.java           # extends ListaLigadas: vendas e totais
+│       ├── Produto.java               # Elemento da lista de produtos (+ enum Atributo)
+│       ├── Venda.java                 # Elemento da lista de vendas
 │       ├── Utilizador.java
-│       ├── modelo/
-│       │   ├── Produto.java              # Elemento guardado na lista de produtos
-│       │   ├── Venda.java                # Elemento guardado na lista de vendas
-│       │   └── Atributo.java             # Atributos do produto (para buscas e ordenação)
-│       ├── estruturas/
-│       │   ├── ListaProdutos.java        # extends ListaLigadas
-│       │   └── ListaVendas.java          # extends ListaLigadas
-│       └── telas/
-│           ├── Tema.java                 # Cores, fontes e estilos
-│           ├── TelaInicial.java          # Imagem e botão "Acessar"
-│           ├── TelaLogin.java            # Autenticação
-│           └── AplicacaoPadaria.java     # Janela principal (sidebar, formulários, abas)
+│       ├── SistemaPadaria.java        # main(), configuração (utilizadores, permissões) e tema visual
+│       ├── TelaInicial.java           # Imagem e botão "Acessar"
+│       ├── TelaLogin.java             # Autenticação
+│       └── AplicacaoPadaria.java      # Janela principal (sidebar, formulários, abas)
 └── test/
-    └── padaria/TestesListas.java
+    └── listas_duplamente_ligadas/TestesListas.java
 ```
 
 `ListaProdutos` e `ListaVendas` herdam de `ListaLigadas` e fazem tudo através dos

@@ -1,8 +1,7 @@
-package padaria.estruturas;
+package listas_duplamente_ligadas;
 
-import listas_duplamente_ligadas.ListaLigadas;
-import padaria.modelo.Atributo;
-import padaria.modelo.Produto;
+import listas_duplamente_ligadas.Produto.Atributo;
+
 
 /**
  * Lista duplamente ligada que guarda os produtos da padaria.
