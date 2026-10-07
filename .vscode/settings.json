@@ -1,0 +1,11 @@
+{
+	// Botão ▷ (extensão Code Runner): compila o projecto todo a partir da raiz
+	// e corre principal.Main, seja qual for o ficheiro .java aberto.
+	"code-runner.executorMap": {
+		"java": "cd \"$workspaceRoot\" && javac -encoding UTF-8 -d bin -sourcepath src src/principal/Main.java && java -cp bin principal.Main"
+	},
+	"code-runner.runInTerminal": true,
+	"code-runner.saveAllFilesBeforeRun": true,
+
+	"files.encoding": "utf8"
+}

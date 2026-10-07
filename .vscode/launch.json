@@ -1,0 +1,20 @@
+{
+	// Run and Debug (F5): corre o programa com a extensão Java.
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "java",
+			"name": "Padaria",
+			"request": "launch",
+			"mainClass": "principal.Main",
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "java",
+			"name": "Testes",
+			"request": "launch",
+			"mainClass": "listas_duplamente_ligadas.TestesListas",
+			"cwd": "${workspaceFolder}"
+		}
+	]
+}
